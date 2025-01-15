@@ -2,7 +2,7 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include <unistd.h>
-
+// circular buffer with multiple producer and consumer
 #define MAX_SIZE 3
 #define NUM_THREADS 10
 typedef struct {
