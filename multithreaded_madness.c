@@ -38,7 +38,7 @@ void *push(void *arg){
     Queue *q = (Queue *)args->q;
     int val = args->val;
     pthread_mutex_lock(&q->m);
-    if(q->waiting_prod>0 || q->cnt == MAX_SIZE){
+    while(q->waiting_prod>0 || q->cnt == MAX_SIZE){
         q->waiting_prod++;
         pthread_cond_wait(&q->cv_prod, &q->m);
         q->waiting_prod--;
@@ -55,7 +55,7 @@ void *push(void *arg){
 void *pop(void *arg){
     Queue *q = (Queue *)arg;
     pthread_mutex_lock(&q->m);
-    if(q->waiting_cons>0 || q->cnt==0){
+    while(q->waiting_cons>0 || q->cnt==0){
         pthread_cond_wait(&q->cv_cons, &q->m);
     }
     int popVal = q->items[q->front];
